@@ -1,32 +1,43 @@
 import React from "react";
-import {QueryClient, QueryClientProvider, useQuery} from "@tanstack/react-query";
-import axios from "axios";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import './App.css';
-import {Card} from "./components";
+import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
+import {Paginated} from "./queries/pagination";
+import {Basic} from "./queries/basic";
+import {Dependent} from "./queries/dependent";
 
 const queryClient = new QueryClient();
 
+
 function Queries() {
-    const {isLoading, error, data, isFetching} = useQuery(["repo2Data"], () =>
-        axios
-            .get("https://dummyjson.com/products")
-            .then((res: any) => res.data)
-    );
-
-    if (isLoading) return <div>Loading...</div>;
-
-    if (error instanceof Error) return <div>An error has occurred: {error.message}</div>;
-    const {products} = data || {};
     return (
         <div className="container">
-            <h1 className="heading">React Query Basics</h1>
-            {products?.map((item: any, index: number) => <div key={index}>
-                <Card>
-                    <h1>{item.title}</h1>
-                    <p>{item.description}</p>
-                </Card>
-            </div>)}
-            <div>{isFetching ? "Updating..." : ""}</div>
+            <h1 className="heading">React Query Queries</h1>
+            <Tabs>
+                <TabList>
+                    <Tab>Basic</Tab>
+                    <Tab>Paginated</Tab>
+                    <Tab>Dependent</Tab>
+                </TabList>
+
+                <TabPanel>
+                    <Basic/>
+                </TabPanel>
+                <TabPanel>
+                    <Paginated/>
+                </TabPanel>
+                <TabPanel><Dependent/></TabPanel>
+            </Tabs>
+            {/*<h1 className="heading">React Query Mutation</h1>*/}
+            {/*<Tabs>*/}
+            {/*    <TabList>*/}
+            {/*        <Tab>Basic</Tab>*/}
+            {/*    </TabList>*/}
+
+            {/*    <TabPanel>*/}
+            {/*        <BasicMutation/>*/}
+            {/*    </TabPanel>*/}
+            {/*</Tabs>*/}
             {/*<ReactQueryDevtools initialIsOpen/>*/}
 
         </div>
